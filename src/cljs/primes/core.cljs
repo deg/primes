@@ -17,10 +17,13 @@
 
 (enable-console-print!)
 
-(def app-state (atom {:text (str (nums/group-signatures 100))}))
+(def app-state (atom {:title "Integer sets"
+                      :integer-sets (nums/group-signatures 1000)}))
 
 (om/root
   (fn [app owner]
-    (dom/h1 nil (:text app)))
+    (apply dom/ul nil
+           (map #(dom/li nil (str %))
+                (:integer-sets app))))
   app-state
   {:target (. js/document (getElementById "app"))})

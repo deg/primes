@@ -89,5 +89,11 @@
 (defn signatures [thru-n]
   (map (juxt signature identity) (range 2 thru-n)))
 
+
+(defn sort-groups [number-groups]
+  (sort-by (comp count second) >
+           (sort-by (comp first second) < number-groups)))
+
+
 (defn group-signatures [thru-n]
-  (group-values-by-keys (signatures thru-n) first second))
+  (sort-groups (group-values-by-keys (signatures thru-n) first second)))

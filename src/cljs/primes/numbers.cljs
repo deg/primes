@@ -45,7 +45,7 @@
   ([n candidate]
      (cond (< n candidate)           []
            (zero? (rem n candidate)) (cons candidate (factors (/ n candidate) candidate))
-           :else                     (factors n (+ 1 candidate)))))
+           :else                     (recur n (+ 1 candidate)))))
 
 
 

@@ -11,19 +11,41 @@
 
 
 (ns primes.core.core
-  (:require [om.core :as om :include-macros true]
+  (:require [clojure.string :as str]
+            [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [degel.primes.numbers :as nums]))
 
 (enable-console-print!)
 
-(def app-state (atom {:title "Integer sets"
-                      :integer-sets (nums/group-signatures 1000)}))
+(def app-state (atom {:title "Integer composite groups"
+                      :integer-sets (nums/group-signatures 100)}))
 
-(om/root
-  (fn [app owner]
-    (apply dom/ul nil
-           (map #(dom/li nil (str %))
-                (:integer-sets app))))
-  app-state
-  {:target (. js/document (getElementById "app"))})
+
+(defn sort-groups [number-groups]
+  (sort-by (comp count second) >
+           (sort-by (comp first second) < number-groups)))
+
+(defn group-view [[signature numbers] owner]
+  (reify
+    om/IRender
+    (render [this]
+      (dom/li nil
+              (dom/b nil (str/join ", " signature))
+              ": "
+              (dom/small nil (dom/i nil (str/join ", " numbers)))))))
+
+(defn groups-view [app owner]
+  (reify
+    om/IRender
+    (render [this]
+      (dom/div nil
+               (dom/h1 nil (:title app))
+               (dom/button nil "show more")
+               (dom/h2 nil (:title app))
+               (apply dom/ul nil
+                      (om/build-all group-view (sort-groups (:integer-sets app))))))))
+
+(om/root groups-view
+         app-state
+         {:target (. js/document (getElementById "app"))})

@@ -82,18 +82,19 @@
 
 
 
-(defn signature [n]
+(defn signature
+  "Generate the signature (group 'name') for one number."[n]
   (let [by-prime (group-results identity (factors n))]
     (sort > (map second by-prime))))
 
 (defn signatures [thru-n]
   (map (juxt signature identity) (range 2 thru-n)))
 
-
-(defn sort-groups [number-groups]
+(defn sort-groups
+  "Sort in a reasonable order for display."
+  [number-groups]
   (sort-by (comp count second) >
            (sort-by (comp first second) < number-groups)))
-
 
 (defn group-signatures [thru-n]
   (sort-groups (group-values-by-keys (signatures thru-n) first second)))

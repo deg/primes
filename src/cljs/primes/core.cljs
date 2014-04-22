@@ -93,7 +93,9 @@
     (render [this]
       (dom/li nil
               (dom/b nil (str/join ", " signature))
-              ": "
+              " [" (nums/vector-magnitude signature) "]"
+              (dom/br nil)
+              (count numbers) ": "
               (dom/small nil (dom/i nil (str/join ", " numbers)))))))
 
 

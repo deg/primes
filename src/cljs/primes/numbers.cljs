@@ -101,7 +101,7 @@
 (defn sort-groups
   "Sort groups based on distance from origin in 'primes space'"
   [number-groups]
-  (sort-by (comp vector-magnitude first) > number-groups))
+  (sort-by (comp vector-magnitude first) < number-groups))
 
 (defn group-signatures [thru-n]
   (sort-groups (group-values-by-keys (signatures thru-n) first second)))

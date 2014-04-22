@@ -80,6 +80,14 @@
 
 ;;;; ================================================================
 
+;;; [TOOD] Functions to move into degel-utils once that stabilizes
+
+(def sqrt (.-sqrt js/Math))
+
+(defn vector-magnitude [vec]
+  (sqrt (reduce + (map #(* % %) vec))))
+
+;;; ================================================================
 
 
 (defn signature
@@ -91,10 +99,9 @@
   (map (juxt signature identity) (range 2 thru-n)))
 
 (defn sort-groups
-  "Sort in a reasonable order for display."
+  "Sort groups based on distance from origin in 'primes space'"
   [number-groups]
-  (sort-by (comp count second) >
-           (sort-by (comp first second) < number-groups)))
+  (sort-by (comp vector-magnitude first) > number-groups))
 
 (defn group-signatures [thru-n]
   (sort-groups (group-values-by-keys (signatures thru-n) first second)))

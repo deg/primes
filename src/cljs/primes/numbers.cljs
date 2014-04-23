@@ -95,8 +95,13 @@
   (let [by-prime (group-results identity (factors n))]
     (sort > (map second by-prime))))
 
+(defn signature-and-value [n]
+  [(signature n) n])
+
+(def signature-and-value-m (memoize signature-and-value))
+
 (defn signatures [thru-n]
-  (map (juxt signature identity) (range 2 thru-n)))
+  (map signature-and-value-m (range 2 thru-n)))
 
 (defn sort-groups
   "Sort groups based on distance from origin in 'primes space'"

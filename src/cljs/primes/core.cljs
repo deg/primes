@@ -21,8 +21,8 @@
 ;;; the numbers's prime factorization.
 ;;;
 ;;; So, 1 is at the origin, and higher powers of primes are further
-;;; aways from the origin. Expressed as vectors, some small numbers
-;;; look like:
+;;; aways from the origin. Expressed as vectors in this multi-dimensional
+;;; space, some small numbers look like:
 ;;;
 ;;;   2 - [1, 0, 0, 0, 0, ...]
 ;;;   3 - [0, 1, 0, 0, 0, ...]

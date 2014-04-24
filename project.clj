@@ -14,10 +14,8 @@
                  #_[org.clojure/clojurescript "0.0-2202"]
                  [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
                  #_[org.clojure/core.async "0.1.278.0-76b25b-alpha"]
-                 [om "0.4.1"]
-                 #_[om "0.5.3"]
-                 [com.facebook/react "0.8.0.1"]
-                 #_[com.facebook/react "0.9.0.1"]
+                 [om "0.5.0"]
+                 [com.facebook/react "0.9.0.1"]
                  ;; [TODO] Put back once cleaned up to prevent reader crash starting nrepl
                  #_[degel/degel-clojure-utils "0.1.21"]]
   

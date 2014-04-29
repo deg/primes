@@ -104,8 +104,11 @@
   [app]
   (om/transact! app :up-to (partial + 100)))
 
+(defn numseq [app]
+  (om/component (dom/div #js {:className "numseq"} "abc" (:up-to app)"def")))
 
-(defn groups-view
+
+(defn groups-views
   "Render all the groups"
   [app owner]
   (reify
@@ -114,6 +117,9 @@
       (dom/div nil
                (dom/h2 nil (:title app))
                (dom/button #js {:onClick #(add-more app)} "show more")
+               (om/build numseq app)
+               " ggg "
+               (om/build numseq app)
                (apply dom/ul nil
                       (om/build-all group-view (nums/group-signatures (:up-to app))))))))
 

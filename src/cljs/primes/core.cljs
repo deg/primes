@@ -82,8 +82,28 @@
 
 (enable-console-print!)
 
+
 (def app-state (atom {:title "Integer composite groups"
                       :up-to 10}))
+
+
+(defn title [app]
+  (om/component (dom/h2 #js {:className "title"} (:title app))))
+
+
+(defn add-more
+  "Extend the range of numbers we are looking at"
+  [app]
+  (om/transact! app :up-to (partial + 100)))
+
+
+(defn numseq [app]
+  (om/component
+   (dom/div #js {:className "numseq"}
+            "Up to: " (:up-to app) "  "
+            (dom/button #js {:onClick #(add-more app)}
+                        "show more"))))
+
 
 (defn group-view
   "Render the contents of one group (set) of numbers."
@@ -99,29 +119,18 @@
               (dom/small nil (dom/i nil (str/join ", " numbers)))))))
 
 
-(defn add-more
-  "Extend the range of numbers we are looking at"
-  [app]
-  (om/transact! app :up-to (partial + 100)))
-
-(defn numseq [app]
-  (om/component (dom/div #js {:className "numseq"} "abc" (:up-to app)"def")))
-
-
-(defn groups-views
+(defn groups-view
   "Render all the groups"
   [app owner]
   (reify
     om/IRenderState
     (render-state [this state]
       (dom/div nil
-               (dom/h2 nil (:title app))
-               (dom/button #js {:onClick #(add-more app)} "show more")
-               (om/build numseq app)
-               " ggg "
+               (om/build title app)
                (om/build numseq app)
                (apply dom/ul nil
                       (om/build-all group-view (nums/group-signatures (:up-to app))))))))
+
 
 (om/root groups-view
          app-state

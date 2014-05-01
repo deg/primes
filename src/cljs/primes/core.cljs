@@ -106,19 +106,6 @@
             (dom/button #js {:onClick #(add-more app)}
                         "show more"))))
 
-(defn counter-view [app owner]
-  (reify
-    om/IInitState
-    (init-state [_]
-      {:expanded false})
-    om/IRenderState
-    (render-state [_ {:keys [expanded]}]
-      (dom/div #js {:className "counter-view-test"}
-               "Simple expander test: "
-               (dom/div
-                #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
-                (if expanded "EXPANDED" "NOT EXPANDED"))))))
-
 
 (defn group-view
   "Render the contents of one group (set) of numbers."
@@ -141,26 +128,6 @@
                                             (str/join ", " numbers)
                                             "{Click to expand}"))))))))
 
-
-(defn group-view-wrapper
-  "Render the contents of one group (set) of numbers."
-  [app owner]
-  (let [[signature numbers] (first (:groups app))]
-    (group-view [signature numbers] owner)))
-
-(defn group-view-wrapper2
-  "Render the contents of one group (set) of numbers."
-  [app-group owner]
-  (let [[signature numbers] (first app-group)]
-    (group-view [signature numbers] owner)))
-
-(defn group-view-wrapper3
-  "Render the contents of one group (set) of numbers."
-  [app-group owner]
-  (let [[signature numbers] app-group]
-    (group-view [signature numbers] owner)))
-
-
 (defn groups-view
   "Render all the groups"
   [app owner]
@@ -170,17 +137,6 @@
       (dom/div nil
                (om/build title app)
                (om/build numseq app)
-               (om/build counter-view app {})
-               (dom/div nil "Uses wrapper, works")
-               (dom/ul nil
-                       (om/build group-view-wrapper app))
-               (dom/div nil "Uses wrapper2, works")
-               (dom/ul nil
-                       (om/build group-view-wrapper2 (:groups app)))
-               (dom/div nil "Uses wrapper3, fails")
-               (dom/ul nil
-                       (om/build group-view-wrapper3 (first (:groups app))))
-               (dom/div nil "Build-all, fails")
                (apply dom/ul nil
                       (om/build-all group-view (:groups app)))))))
 

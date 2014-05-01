@@ -99,11 +99,11 @@
   (om/update! app :groups (nums/group-signatures (:up-to @app))))
 
 
-(defn numseq [app]
+(defn show-more [app]
   (om/component
-   (dom/div #js {:className "numseq"}
-            "Up to: " (:up-to app) "  "
-            (dom/button #js {:onClick #(add-more app)}
+   (dom/div #js {:className "show-more"}
+            (dom/span #js {:className "guidance"} "Up to: " (:up-to app) "  ")
+            (dom/button #js {:className "standalone-button" :onClick #(add-more app)}
                         "show more"))))
 
 
@@ -116,17 +116,22 @@
       {:expanded false})
     om/IRenderState
     (render-state [_ {:keys [expanded]}]
-      (dom/li nil
-              (dom/b nil (str/join ", " signature))
-              " [" (nums/vector-magnitude signature) "]"
+      (dom/li #js {:className "group"}
+              (dom/span #js {:className "signature"} (str/join ", " signature))
+              "["
+              (dom/span
+               #js {:className "magnitude"}
+               (nums/vector-magnitude signature))
+              "]"
               (dom/br nil)
               (count numbers) ": "
-              (dom/span #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
-                        (dom/small nil
-                                   (dom/i nil
-                                          (if expanded
-                                            (str/join ", " numbers)
-                                            "{Click to expand}"))))))))
+              (dom/span
+               #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
+               (dom/span
+                #js {:className "numbers"}
+                (if (or expanded (< (count numbers) 5))
+                  (str/join ", " numbers)
+                  "{Click to expand}")))))))
 
 (defn groups-view
   "Render all the groups"
@@ -136,7 +141,7 @@
     (render-state [this state]
       (dom/div nil
                (om/build title app)
-               (om/build numseq app)
+               (om/build show-more app)
                (apply dom/ul nil
                       (om/build-all group-view (:groups app)))))))
 

@@ -1,0 +1,40 @@
+._centered, .centered, .title {
+    text-align:center;
+}
+
+._big, h2 {
+    font-size: 18px;
+}
+
+._heading, .title {
+    color: #1020ff;
+}
+
+._action, .standalone-button {
+    color: #803030;
+}
+
+._standout, .show-more {
+  background-color:#c0c0c0;
+  padding:0.5em;
+  border-top: #ddd 3px solid;
+  border-right: #ddd 3px solid;
+  border-bottom: #977 2px solid;
+  border-left: #977 2px solid;
+}
+
+._minor, .guidance {
+  font-family:sans-serif;
+  font-size:11pt;
+}
+
+._empasis, .signature, .magnitude {
+  font-weight:bold;
+  color: green;
+  padding-right: 5px;
+}
+
+._details, .numbers {
+  font-size:small;
+  font-style:italic;
+}

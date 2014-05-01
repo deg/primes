@@ -11,7 +11,7 @@
 
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-2202"]
-                 [om "0.5.0"]
+                 [om "0.6.2"]
                  [com.facebook/react "0.9.0.1"]]
   
   :plugins [[cider/cider-nrepl "0.7.0-SNAPSHOT"]

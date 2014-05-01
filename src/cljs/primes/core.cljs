@@ -94,7 +94,7 @@
 (defn add-more
   "Extend the range of numbers we are looking at"
   [app]
-  (om/transact! app :up-to (partial + 100)))
+  (om/transact! app :up-to #(nums/ceil (* % 1.5)))
 
 
 (defn numseq [app]

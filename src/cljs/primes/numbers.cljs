@@ -83,6 +83,7 @@
 ;;; [TOOD] Functions to move into degel-utils once that stabilizes
 
 (def sqrt (.-sqrt js/Math))
+(def ceil (.-ceil js/Math))
 
 (defn vector-magnitude [vec]
   (sqrt (reduce + (map #(* % %) vec))))

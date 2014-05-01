@@ -84,7 +84,8 @@
 
 
 (def app-state (atom {:title "Integer composite groups"
-                      :up-to 10}))
+                      :up-to 10
+                      :groups (nums/group-signatures 10)}))
 
 
 (defn title [app]
@@ -95,6 +96,7 @@
   "Extend the range of numbers we are looking at"
   [app]
   (om/transact! app :up-to #(nums/ceil (* % 1.5)))
+  (om/update! app :groups (nums/group-signatures (:up-to @app))))
 
 
 (defn numseq [app]
@@ -118,28 +120,6 @@
                 (if expanded "EXPANDED" "NOT EXPANDED"))))))
 
 
-(defn group-view-new
-  "Render the contents of one group (set) of numbers."
-  [app owner]
-  (let [signature [1 1]
-        numbers [4 5 6 7 8 9 10 "...dummy data..."]]
-    (reify
-      om/IInitState
-      (init-state [_]
-        {:expanded false})
-      om/IRenderState
-      (render-state [_ {:keys [expanded]}]
-        (dom/li nil
-                (dom/b nil
-                       (str/join ", " signature))
-                " [" (nums/vector-magnitude signature) "]"
-                (dom/br nil)
-                (count numbers) ": " (+ 3 4 )
-                (dom/span #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
-                           (dom/small nil (if expanded
-                                            (dom/i nil (str/join ", " numbers))
-                                            "CLICK TO EXPAND"))))))))
-
 (defn group-view
   "Render the contents of one group (set) of numbers."
   [[signature numbers] owner]
@@ -154,7 +134,31 @@
               " [" (nums/vector-magnitude signature) "]"
               (dom/br nil)
               (count numbers) ": "
-              (dom/small nil (dom/i nil (str/join ", " numbers)))))))
+              (dom/span #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
+                        (dom/small nil
+                                   (dom/i nil
+                                          (if expanded
+                                            (str/join ", " numbers)
+                                            "{Click to expand}"))))))))
+
+
+(defn group-view-wrapper
+  "Render the contents of one group (set) of numbers."
+  [app owner]
+  (let [[signature numbers] (first (:groups app))]
+    (group-view [signature numbers] owner)))
+
+(defn group-view-wrapper2
+  "Render the contents of one group (set) of numbers."
+  [app-group owner]
+  (let [[signature numbers] (first app-group)]
+    (group-view [signature numbers] owner)))
+
+(defn group-view-wrapper3
+  "Render the contents of one group (set) of numbers."
+  [app-group owner]
+  (let [[signature numbers] app-group]
+    (group-view [signature numbers] owner)))
 
 
 (defn groups-view
@@ -167,10 +171,18 @@
                (om/build title app)
                (om/build numseq app)
                (om/build counter-view app {})
+               (dom/div nil "Uses wrapper, works")
                (dom/ul nil
-                      (om/build group-view-new app {}))
+                       (om/build group-view-wrapper app))
+               (dom/div nil "Uses wrapper2, works")
+               (dom/ul nil
+                       (om/build group-view-wrapper2 (:groups app)))
+               (dom/div nil "Uses wrapper3, fails")
+               (dom/ul nil
+                       (om/build group-view-wrapper3 (first (:groups app))))
+               (dom/div nil "Build-all, fails")
                (apply dom/ul nil
-                      (om/build-all group-view (nums/group-signatures (:up-to app))))))))
+                      (om/build-all group-view (:groups app)))))))
 
 
 (om/root groups-view

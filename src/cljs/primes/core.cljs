@@ -9,51 +9,36 @@
 ;;;
 ;;; You must not remove this notice, or any other, from this software.
 
+;;; This branch exists only to identify a bug, either in this code or the om library.
 
 (ns primes.core.core
   (:require-macros [cljs.core.async.macros :refer [go]])
-  (:require [clojure.data :as data]
-            [clojure.string :as str]
-            [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]
-            [cljs.core.async :refer [put! chan <!]]))
+  (:require [om.core :as om :include-macros true]
+            [om.dom :as dom :include-macros true]))
 
 (enable-console-print!)
 
 
-(def app-state (atom {:title "Integer composite groups"
-                      :up-to 10
-                      :groups '([(1) (2 3 5 7 11 13)]
-                                [(1 1) (6 10 14)]
-                                [(2) (4 9)]
-                                [(2 1) (12)]
-                                [(3) (8)])}))
+(def app-state (atom {:groups '([1 2])}))
 
 
-(defn group-view
-  "Render the contents of one group (set) of numbers."
-  [[signature numbers] owner]
+(defn group-view [[signature numbers] owner]
   (reify
     om/IInitState
     (init-state [_]
       {:expanded false})
     om/IRenderState
     (render-state [_ {:keys [expanded]}]
-      (dom/li nil
-              (dom/span #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
-                        (if expanded
-                          "{Click to restore}"
-                          "{Click to expand}"))))))
+      (dom/span #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
+                (if expanded
+                  "{Click to restore}"
+                  "{Click to expand}")))))
 
-(defn group-view-wrapper2
-  "Render the contents of one group (set) of numbers."
-  [app-group owner]
+(defn group-view-wrapper2 [app-group owner]
   (let [[signature numbers] (first app-group)]
     (group-view [signature numbers] owner)))
 
-(defn group-view-wrapper3
-  "Render the contents of one group (set) of numbers."
-  [app-group owner]
+(defn group-view-wrapper3 [app-group owner]
   (let [[signature numbers] app-group]
     (group-view [signature numbers] owner)))
 

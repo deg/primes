@@ -17,11 +17,9 @@
 
 (enable-console-print!)
 
+(def app-state (atom {:groups ()}))
 
-(def app-state (atom {:groups '([1 2])}))
-
-
-(defn group-view [[signature numbers] owner]
+(defn group-view [_ owner]
   (reify
     om/IInitState
     (init-state [_]
@@ -33,14 +31,11 @@
                   "{Click to restore}"
                   "{Click to expand}")))))
 
-(defn group-view-wrapper2 [app-group owner]
-  (let [[signature numbers] (first app-group)]
-    (group-view [signature numbers] owner)))
+(defn working [all owner]
+  (group-view (first all) owner))
 
-(defn group-view-wrapper3 [app-group owner]
-  (let [[signature numbers] app-group]
-    (group-view [signature numbers] owner)))
-
+(defn failing [primary owner]
+  (group-view primary owner))
 
 (defn groups-view
   "Render all the groups"
@@ -49,12 +44,11 @@
     om/IRenderState
     (render-state [this state]
       (dom/div nil
-               (dom/div nil "Uses wrapper2, works")
-               (dom/ul nil
-                       (om/build group-view-wrapper2 (:groups app)))
-               (dom/div nil "Uses wrapper3, fails")
-               (dom/ul nil
-                       (om/build group-view-wrapper3 (first (:groups app))))))))
+               "Working case: "
+               (om/build working (:groups app))
+                (dom/br nil)
+               "Failing case: "
+               (om/build failing (first (:groups app)))))))
 
 
 (om/root groups-view

@@ -11,12 +11,8 @@
 
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-2202"]
-                 [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
-                 #_[org.clojure/core.async "0.1.278.0-76b25b-alpha"]
                  [om "0.5.0"]
-                 [com.facebook/react "0.9.0.1"]
-                 ;; [TODO] Put back once cleaned up to prevent reader crash starting nrepl
-                 #_[degel/degel-clojure-utils "0.1.21"]]
+                 [com.facebook/react "0.9.0.1"]]
   
   :plugins [[cider/cider-nrepl "0.7.0-SNAPSHOT"]
             [lein-cljsbuild "1.0.3"]]

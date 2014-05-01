@@ -12,7 +12,6 @@
 ;;; This branch exists only to identify a bug, either in this code or the om library.
 
 (ns primes.core.core
-  (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 

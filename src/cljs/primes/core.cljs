@@ -30,21 +30,6 @@
                                 [(3) (8)])}))
 
 
-
-(defn counter-view [app owner]
-  (reify
-    om/IInitState
-    (init-state [_]
-      {:expanded false})
-    om/IRenderState
-    (render-state [_ {:keys [expanded]}]
-      (dom/div #js {:className "counter-view-test"}
-               "Simple expander test: "
-               (dom/div
-                #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
-                (if expanded "EXPANDED" "NOT EXPANDED"))))))
-
-
 (defn group-view
   "Render the contents of one group (set) of numbers."
   [[signature numbers] owner]
@@ -55,23 +40,10 @@
     om/IRenderState
     (render-state [_ {:keys [expanded]}]
       (dom/li nil
-              (dom/b nil (str/join ", " signature))
-              " [" signature "]"
-              (dom/br nil)
-              (count numbers) ": "
               (dom/span #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
-                        (dom/small nil
-                                   (dom/i nil
-                                          (if expanded
-                                            (str/join ", " numbers)
-                                            "{Click to expand}"))))))))
-
-
-(defn group-view-wrapper
-  "Render the contents of one group (set) of numbers."
-  [app owner]
-  (let [[signature numbers] (first (:groups app))]
-    (group-view [signature numbers] owner)))
+                        (if expanded
+                          "{Click to restore}"
+                          "{Click to expand}"))))))
 
 (defn group-view-wrapper2
   "Render the contents of one group (set) of numbers."
@@ -93,19 +65,12 @@
     om/IRenderState
     (render-state [this state]
       (dom/div nil
-               (om/build counter-view app {})
-               (dom/div nil "Uses wrapper, works")
-               (dom/ul nil
-                       (om/build group-view-wrapper app))
                (dom/div nil "Uses wrapper2, works")
                (dom/ul nil
                        (om/build group-view-wrapper2 (:groups app)))
                (dom/div nil "Uses wrapper3, fails")
                (dom/ul nil
-                       (om/build group-view-wrapper3 (first (:groups app))))
-               (dom/div nil "Build-all, fails")
-               (apply dom/ul nil
-                      (om/build-all group-view (:groups app)))))))
+                       (om/build group-view-wrapper3 (first (:groups app))))))))
 
 
 (om/root groups-view

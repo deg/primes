@@ -104,13 +104,51 @@
             (dom/button #js {:onClick #(add-more app)}
                         "show more"))))
 
+(defn counter-view [app owner]
+  (reify
+    om/IInitState
+    (init-state [_]
+      {:expanded false})
+    om/IRenderState
+    (render-state [_ {:keys [expanded]}]
+      (dom/div #js {:className "counter-view-test"}
+               "Simple expander test: "
+               (dom/div
+                #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
+                (if expanded "EXPANDED" "NOT EXPANDED"))))))
+
+
+(defn group-view-new
+  "Render the contents of one group (set) of numbers."
+  [app owner]
+  (let [signature [1 1]
+        numbers [4 5 6 7 8 9 10 "...dummy data..."]]
+    (reify
+      om/IInitState
+      (init-state [_]
+        {:expanded false})
+      om/IRenderState
+      (render-state [_ {:keys [expanded]}]
+        (dom/li nil
+                (dom/b nil
+                       (str/join ", " signature))
+                " [" (nums/vector-magnitude signature) "]"
+                (dom/br nil)
+                (count numbers) ": " (+ 3 4 )
+                (dom/span #js {:onClick (fn [e] (om/set-state! owner :expanded (not expanded)))}
+                           (dom/small nil (if expanded
+                                            (dom/i nil (str/join ", " numbers))
+                                            "CLICK TO EXPAND"))))))))
 
 (defn group-view
   "Render the contents of one group (set) of numbers."
   [[signature numbers] owner]
   (reify
-    om/IRender
-    (render [this]
+    om/IInitState
+    (init-state [_]
+      {:expanded false})
+    om/IRenderState
+    (render-state [_ {:keys [expanded]}]
       (dom/li nil
               (dom/b nil (str/join ", " signature))
               " [" (nums/vector-magnitude signature) "]"
@@ -128,6 +166,9 @@
       (dom/div nil
                (om/build title app)
                (om/build numseq app)
+               (om/build counter-view app {})
+               (dom/ul nil
+                      (om/build group-view-new app {}))
                (apply dom/ul nil
                       (om/build-all group-view (nums/group-signatures (:up-to app))))))))
 

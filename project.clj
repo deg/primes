@@ -10,8 +10,7 @@
   :source-paths ["src/clj" "src/cljs"]
 
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/clojurescript "0.0-2156"]
-                 #_[org.clojure/clojurescript "0.0-2202"]
+                 [org.clojure/clojurescript "0.0-2202"]
                  [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
                  #_[org.clojure/core.async "0.1.278.0-76b25b-alpha"]
                  [om "0.5.0"]
@@ -19,8 +18,8 @@
                  ;; [TODO] Put back once cleaned up to prevent reader crash starting nrepl
                  #_[degel/degel-clojure-utils "0.1.21"]]
   
-  :plugins [[lein-cljsbuild "1.0.2"]
-            #_[lein-cljsbuild "1.0.3"]]
+  :plugins [[cider/cider-nrepl "0.7.0-SNAPSHOT"]
+            [lein-cljsbuild "1.0.3"]]
 
   :hooks [leiningen.cljsbuild]
 

@@ -71,7 +71,7 @@
 ;;; to create a web page with some useful visualizations.
 
 
-(ns primes.core.core
+(ns primes.core
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [clojure.data :as data]
             [clojure.string :as str]

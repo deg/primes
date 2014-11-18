@@ -9,19 +9,20 @@
    <link href="primes.css" rel="stylesheet" type="text/css">
   <head>
   <body>
-    <div id="box" class="jxgbox" style="width:500px; height:500px;"></div>
+    <div id="box" class="jxgbox" style="width:800px; height:600px;"></div>
     <script type="text/javascript">
-       var maxX = 1000;
-       var b = JXG.JSXGraph.initBoard('box', {boundingbox: [-1, 100, maxX, -1], axis: true});
-       var s = b.create('slider',[[0,4],[maxX,4],[10,25,maxX]],{snapWidth: 10});
-       b.create('functiongraph',
-                [function(x){return x/Math.log(x);},
-                 0, function(){return s.Value();}],
-                {name:"n/Log(n)", withLabel: true});
-       b.create('functiongraph',
-                [function(x){return Math.log(x);},
-                 0, function(){return s.Value();}],
-                {name:"Log(n)", withLabel: true});
+      var maxX = 1000;
+      var maxY = maxX/Math.log(maxX)*2;
+      var b = JXG.JSXGraph.initBoard('box', {boundingbox: [-1, maxY, maxX, -1], axis: true});
+      var s = b.create('slider',[[0,4],[maxX,4],[10,25,maxX]],{snapWidth: maxX/100});
+      b.create('functiongraph',
+               [function(x){return x/Math.log(x);},
+                0, function(){return s.Value();}],
+               {name:"n/Log(n)", withLabel: true});
+      b.create('functiongraph',
+               [function(x){return Math.log(x);},
+                0, function(){return s.Value();}],
+               {name:"Log(n)", withLabel: true});
     </script>
     <div id="app"></div>
     <script src="http://fb.me/react-0.9.0.js"></script>

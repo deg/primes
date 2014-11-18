@@ -71,7 +71,7 @@
 ;;; to create a web page with some useful visualizations.
 
 
-(ns primes.core
+(ns degel.primes.core
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [clojure.data :as data]
             [clojure.string :as str]
@@ -107,6 +107,26 @@
                         "show more"))))
 
 
+(defn show-graph [app owner]
+  "Render the visualization graph"
+  (reify
+    om/IInitState
+    (init-state [_]
+      {:graphs nil})
+    om/IRenderState
+    (render-state [_ _]
+      (dom/div #js {}
+               "before"
+               (dom/div #js {:id "graphbert" :className "jxgbox"
+                                      :style #js {:width "400px" :height "400px"}})
+               "after"))
+    om/IDidMount
+    (did-mount [graph-div]
+      (println "hello world")
+      (println (.-initBoard (.-JSXGraph js/JXG)))
+      (println "Do you like my hat")
+      )))
+
 (defn group-view
   "Render the contents of one group (set) of numbers."
   [[signature numbers] owner]
@@ -141,6 +161,7 @@
     (render-state [this state]
       (dom/div nil
                (om/build title app)
+               (om/build show-graph app)
                (om/build show-more app)
                (apply dom/ul nil
                       (om/build-all group-view (:groups app)))))))

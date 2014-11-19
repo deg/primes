@@ -9,16 +9,15 @@
 
   :source-paths ["src/clj" "src/cljs"]
 
-  :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/clojurescript "0.0-2202"]
-                 [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
-                 #_[org.clojure/core.async "0.1.278.0-76b25b-alpha"]
-                 [om "0.6.2"]
-                 [com.facebook/react "0.9.0.1"]
+  :dependencies [[org.clojure/clojure "1.6.0"]
+                 [org.clojure/clojurescript "0.0-2371"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                 [om "0.8.0-alpha1"]
+                 [com.facebook/react "0.11.2"]
                  ;; [TODO] Put back once cleaned up to prevent reader crash starting nrepl
                  #_[degel/degel-clojure-utils "0.1.21"]]
   
-  :plugins [[cider/cider-nrepl "0.7.0-SNAPSHOT"]
+  :plugins [[cider/cider-nrepl "0.8.0-SNAPSHOT"]
             [lein-cljsbuild "1.0.3"]]
 
   :hooks [leiningen.cljsbuild]
